@@ -1,0 +1,34 @@
+body{
+font-family: 'Bree Serif', serif;
+}
+img.img-responsive{
+    border-radius: 1.5em;
+}
+a.navbar-brand{
+  font-style: oblique;
+  font-family: 'Bree Serif', serif;
+  
+}
+.panel-heading{
+    text-align: center;
+    font-family: monospace;
+}
+ .navbar-login
+{
+    width: 305px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.navbar-login-session
+{
+    padding: 10px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.icon-size
+{
+    font-size: 87px;
+    
+}

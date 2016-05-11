@@ -1,0 +1,11 @@
+<script type="text/javascript">
+        function ver_ficha(id_persona)
+        {
+
+            $("#div_cargando").show("slow");
+            $("#ver_ficha_resul").load("ver_ficha.jsp?id_persona=" + id_persona, "", function() {
+                $("#ver_ficha_resul").show("slow");
+                $("#div_cargando").hide("slow");
+            });
+        }
+    </script>
