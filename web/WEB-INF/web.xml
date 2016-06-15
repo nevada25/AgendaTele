@@ -21,10 +21,6 @@
         <servlet-class>Control.ControlTelefonoSvt</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ControlPerCorSvt</servlet-name>
-        <servlet-class>Control.ControlPerCorSvt</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ControlPeCorSvt</servlet-name>
         <servlet-class>Control.ControlPeCorSvt</servlet-class>
     </servlet>
@@ -51,10 +47,6 @@
     <servlet-mapping>
         <servlet-name>ControlTelefonoSvt</servlet-name>
         <url-pattern>/ControlTelefonoSvt</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ControlPerCorSvt</servlet-name>
-        <url-pattern>/ControlPerCorSvt</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ControlPeCorSvt</servlet-name>

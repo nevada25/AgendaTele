@@ -9,11 +9,13 @@ public class PersonaCorreo {
     private String area;
     private String id_telefono;
     private String telefono;
+    private String id_persona;
+    private String persona;
 
     public PersonaCorreo() {
     }
 
-    public PersonaCorreo(String idpercorreo, String id_correo, String correo, String id_area, String area, String id_telefono, String telefono) {
+    public PersonaCorreo(String idpercorreo, String id_correo, String correo, String id_area, String area, String id_telefono, String telefono, String id_persona, String persona) {
         this.idpercorreo = idpercorreo;
         this.id_correo = id_correo;
         this.correo = correo;
@@ -21,6 +23,24 @@ public class PersonaCorreo {
         this.area = area;
         this.id_telefono = id_telefono;
         this.telefono = telefono;
+        this.id_persona = id_persona;
+        this.persona = persona;
+    }
+
+    public String getPersona() {
+        return persona;
+    }
+
+    public void setPersona(String persona) {
+        this.persona = persona;
+    }
+
+    public String getId_persona() {
+        return id_persona;
+    }
+
+    public void setId_persona(String id_persona) {
+        this.id_persona = id_persona;
     }
 
     public String getIdpercorreo() {
@@ -78,5 +98,6 @@ public class PersonaCorreo {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
 
 }

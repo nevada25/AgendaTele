@@ -14,8 +14,8 @@ import java.util.List;
  */
 public interface AreaDao {
     public List<Area> listar();
-    public boolean AgregarArea(Area area);
-    public boolean ActualizarArea(Area area);
+    public boolean AgregarArea(Area a);
+    public boolean ActualizarArea(Area a);
     public boolean EliminarArea(int id_area);
     public List<Area> listarArea();
     

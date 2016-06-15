@@ -12,32 +12,23 @@ package bean;
 public class Usuario  extends Persona{
 
     private int id_usuario;
-    private int id_rol;
-    private int id_personas;
     private String login;
     private String correo;
     private String clave;
+   private String img;
     private String estado;
+    
 
     public Usuario() {
     }
 
-    public Usuario(int id_usuario, int id_rol, int id_personas, String login, String correo, String clave, String estado) {
+    public Usuario(int id_usuario, String login, String correo, String clave, String img, String estado) {
         this.id_usuario = id_usuario;
-        this.id_rol = id_rol;
-        this.id_personas = id_personas;
         this.login = login;
         this.correo = correo;
         this.clave = clave;
+        this.img = img;
         this.estado = estado;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
     }
 
     public int getId_usuario() {
@@ -48,22 +39,6 @@ public class Usuario  extends Persona{
         this.id_usuario = id_usuario;
     }
 
-    public int getId_rol() {
-        return id_rol;
-    }
-
-    public void setId_rol(int id_rol) {
-        this.id_rol = id_rol;
-    }
-
-    public int getId_personas() {
-        return id_personas;
-    }
-
-    public void setId_personas(int id_personas) {
-        this.id_personas = id_personas;
-    }
-
     public String getLogin() {
         return login;
     }
@@ -72,12 +47,28 @@ public class Usuario  extends Persona{
         this.login = login;
     }
 
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
     public String getClave() {
         return clave;
     }
 
     public void setClave(String clave) {
         this.clave = clave;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getEstado() {

@@ -25,7 +25,7 @@ public class AreaDaoImpl implements AreaDao {
         Statement st = null;
         ResultSet rs = null;
         Area a = null;
-        String Query = "SELECT `id_area`, `nombre_area`, `estado` FROM `area` order by `nombre_area`";
+        String Query = "SELECT `id_area`, UPPER(`nombre_area`) as nombre_area, `estado` FROM `area` order by `nombre_area`";
         try {
             lista_area = new ArrayList<Area>();
             st = cn.centroConexion().createStatement();
@@ -48,11 +48,11 @@ public class AreaDaoImpl implements AreaDao {
     }
 
     @Override
-    public boolean AgregarArea(Area area) {
+    public boolean AgregarArea(Area a) {
       boolean estado=false;
         Statement st;
-        String sql = "INSERT INTO `area`(`id_area`, `nombre_area`, `estado`, `id_area_padre`, `id_empresa`)"
-                   + " VALUES (null,'"+area.getNombre_area()+"',1,0,"+area.getId_empresa()+")";
+        String sql = "INSERT INTO `area`(`id_area`, `nombre_area`, `estado`, `id_empresa`, `id_area_padre`) "
+                   + "VALUES (null,'"+a.getNombre_area()+"','1',"+a.getId_empresa()+","+a.getId_area_padre()+")";
         try {
             st=open().createStatement();
             st.executeUpdate(sql);
@@ -73,11 +73,11 @@ public class AreaDaoImpl implements AreaDao {
     }
 
     @Override
-    public boolean ActualizarArea(Area area) {
+    public boolean ActualizarArea(Area a) {
             boolean estado=false;
         Statement st;
-        String sql = "UPDATE `area` SET `nombre_area`='"+area.getNombre_area()+"',`estado`='1' ,"
-                   + " `id_area_padre`= 0,`id_empresa`="+area.getId_empresa()+" WHERE `id_area`= "+area.getId_area()+"";
+        String sql = "UPDATE `area` SET `nombre_area`='"+a.getNombre_area()+"' , "
+                   + " `estado` = 1,`id_empresa`="+a.getId_empresa()+",`id_area_padre`="+a.getId_area_padre()+" WHERE `id_area`="+a.getId_area();
         try {
             st=open().createStatement();
             st.executeUpdate(sql);
@@ -157,8 +157,8 @@ public class AreaDaoImpl implements AreaDao {
         Statement st = null;
         ResultSet rs = null;
         Area a = null;
-        String Query = "SELECT a.`id_area` as id_area, a.`nombre_area` as nombre_area, a.`estado` as estado, a.`id_area_padre` as id_area_padre, a.`id_empresa` as id_empresa,e.`nombre_empresa` as nombre_empresa"
-                     + " FROM `area` a,`empresa` e WHERE e.`id_empresa`=a.`id_empresa`" +
+        String Query = "SELECT a.`id_area` as id_area, UPPER(a.`nombre_area`) as nombre_area, a.`estado` as estado, a.`id_area_padre` as id_area_padre, a.`id_empresa` as id_empresa,UPPER(e.`nombre_empresa`) as nombre_empresa"
+                     + " FROM `area` a,`empresa` e WHERE e.`id_empresa`=a.`id_empresa` order by `nombre_area`" +
 "";
         try {
             lista_area = new ArrayList<>();

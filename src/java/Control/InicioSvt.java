@@ -46,6 +46,9 @@ public class InicioSvt extends HttpServlet {
            case "ControlPersonaCorreo":
                request.getRequestDispatcher("PersonaCorreo.jsp?opcion=Modificar").forward(request, response);
            break;
+           case "ControlPersonaCorreo2":
+               request.getRequestDispatcher("PersonaCorreo.jsp?opcion=Modificar2").forward(request, response);
+           break;
             case "Persona":
               request.getRequestDispatcher("Persona.jsp?opcion=Listar").forward(request, response);
            break;

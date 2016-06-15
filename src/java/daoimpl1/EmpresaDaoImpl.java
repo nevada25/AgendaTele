@@ -16,7 +16,7 @@ public class EmpresaDaoImpl implements EmpresaDao{
         Statement st = null;
         ResultSet rs = null;
         Empresa e = null;
-        String Query = "SELECT `id_empresa`, `nombre_empresa`, `id_tipo_empresa`, `estado`, `id_padre_empresa` FROM `empresa`" +
+        String Query = "SELECT `id_empresa`, UPPER(`nombre_empresa`) as nombre_empresa, `id_tipo_empresa`, `estado`, `id_empresa_padre` FROM `empresa`" +
 "";
         try {
             lista= new ArrayList<>();
@@ -28,7 +28,7 @@ public class EmpresaDaoImpl implements EmpresaDao{
                e.setNombre_empresa(rs.getString("nombre_empresa"));
                e.setId_tipo_empresa(rs.getString("id_tipo_empresa"));
                e.setEstado(rs.getString("estado"));
-               e.setId_padre_empresa(rs.getString("id_padre_empresa"));
+               e.setId_padre_empresa(rs.getString("id_empresa_padre"));
                 
                 lista.add(e);
                 
@@ -42,26 +42,7 @@ public class EmpresaDaoImpl implements EmpresaDao{
         return lista;
     }
 
-    @Override
-    public boolean InsertEmpresa(Empresa e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean UpdateEmpresa(Empresa e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean DeleteEmpresa(Empresa e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Empresa SearchEmpresaid(String id_empresa) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+   
     
     
 }

@@ -19,6 +19,10 @@ public interface PersonaCorreoDao {
     public boolean DeletePersonaCorreo(String id_pc);
     public List<PersonaCorreo> ReadPersonaCorreo();
     public List<PersonaCorreo> VerPersonaCorreo();
+    public List<PersonaCorreo> VerPersonaCorreo(String id_pc);
+    public List<PersonaCorreo> VerPersonaCorreoArea(String id_area);
+    public List<PersonaCorreo> VerPersonaCorreoCorreo(String id_correo);
+    public List<PersonaCorreo> VerPersonaCorreoNumero(String id_telefono);
     public PersonaCorreo obteneridPc(String id_pc);
     public PersonaCorreo obtenerPc(PersonaCorreo pc);
 }

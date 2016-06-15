@@ -14,8 +14,8 @@ public class TelefonoDaoImpl implements TelefonoDao{
     public boolean AgregarTelefono(Telefono t) {
          boolean estado=false;
         Statement st;
-        String sql = "INSERT INTO `telefono`(`id_telefono`, `id_operador`, `nro_telefono`, `descripcion`, `estado`, `id_persona`) "
-                   + "VALUES (null,"+t.getId_operador()+",'"+t.getNro_telefono()+"','MUCHAS COSAS','1',"+t.getId_persona()+")";
+        String sql = "INSERT INTO `telefono`(`id_telefono`, `id_operador`, `nro_telefono`, `descripcion`, `estado`)"
+                    +" VALUES (null,"+t.getId_operador()+",'"+t.getNro_telefono()+"','"+t.getDescripcion()+"',1)";
         try {
             st=cn.centroConexion().createStatement();
             st.executeUpdate(sql);
@@ -40,11 +40,10 @@ public class TelefonoDaoImpl implements TelefonoDao{
         Statement st = null;
         ResultSet rs = null;
         Telefono t = null;
-        String Query = "SELECT t.`id_telefono` as id_telefono ,t.`id_operador` as id_operador ,o.`operadora_nombre` as operadora_nombre "
-                     + ",t.`nro_telefono` as nro_telefono,t.`descripcion` as descripcion,t.`estado` as estado,t.`id_persona` as id_persona  "
-                     + ",CONCAT(p.`nombres`, ' ' ,p.`apepat`,' ' , p.`apemat`) as NOMBRE"
-                     + " FROM `telefono` t ,`operador` o , `persona` p "
-                     + " WHERE o.`id_operador`=t.`id_operador` and p.`id_persona`=t.`id_persona` order by NOMBRE";
+        String Query = "SELECT t.`id_telefono` as id_telefono ,t.`id_operador` as id_operador , "
+                     + "o.`operadora_nombre` as operadora_nombre ,t.`nro_telefono` as nro_telefono ,"
+                     + "t.`descripcion` as descripcion,t.`estado` as estado FROM `telefono` t ,`operador` o "
+                     + "WHERE o.`id_operador`=t.`id_operador` order by operadora_nombre";
         try {
             lista= new ArrayList<Telefono>();
             st = cn.centroConexion().createStatement();
@@ -55,8 +54,6 @@ public class TelefonoDaoImpl implements TelefonoDao{
                 t.setId_operador(rs.getString("id_operador"));
                 t.setNro_telefono(rs.getString("nro_telefono"));
                 t.setDescripcion(rs.getString("operadora_nombre"));
-                t.setEstado(rs.getString("NOMBRE"));
-                t.setId_persona(rs.getString("id_persona"));
                 lista.add(t);
                 
             }
@@ -73,8 +70,8 @@ public class TelefonoDaoImpl implements TelefonoDao{
     public boolean ActualizarTelefono(Telefono t) {
          boolean estado=false;
         Statement st;
-        String sql = "UPDATE `telefono` SET `id_operador`="+t.getId_operador()+",`nro_telefono`='"+t.getNro_telefono()+"',"
-                + " `descripcion`='"+t.getDescripcion()+"',`estado`='1',`id_persona`="+t.getId_persona()+" WHERE `id_telefono`= "+t.getId_telefono();
+        String sql = "UPDATE `telefono` SET `id_operador` = "+t.getId_operador()+" , `nro_telefono`='"+t.getNro_telefono()+"' , "
+                   + "`descripcion` = '"+t.getDescripcion()+"', `estado` = 1  WHERE `id_telefono` = "+t.getId_telefono();
         try {
             st=cn.centroConexion().createStatement();
             st.executeUpdate(sql);
@@ -97,7 +94,7 @@ public class TelefonoDaoImpl implements TelefonoDao{
     public boolean EliminarTelefono(String id_telefono) {
          boolean estado=false;
         Statement st;
-        String sql = "DELETE FROM `telefono` WHERE `id_telefono`="+id_telefono;
+        String sql = "DELETE FROM `telefono` WHERE `id_telefono` = "+id_telefono;
         try {
             st=cn.centroConexion().createStatement();
             st.executeUpdate(sql);
@@ -120,7 +117,7 @@ public class TelefonoDaoImpl implements TelefonoDao{
     public Telefono SearchIdTelefono(String id_telefono) {
         Statement st = null;
         ResultSet rs= null;
-        String query = "SELECT `id_telefono`, `id_operador`, `nro_telefono`, `descripcion`, `estado`, `id_persona` FROM `telefono` WHERE `id_telefono`= "+id_telefono;
+        String query = "SELECT `id_telefono`, `id_operador`, `nro_telefono`, `descripcion`, `estado` FROM `telefono` WHERE  `id_telefono` = "+id_telefono;
         Telefono te= null;
         
         try {
@@ -130,9 +127,8 @@ public class TelefonoDaoImpl implements TelefonoDao{
                 te= new Telefono();
                 te.setId_telefono(rs.getString("id_telefono"));
                 te.setId_operador(rs.getString("id_operador"));
-                te.setId_persona(rs.getString("id_persona"));
-                te.setDescripcion(rs.getString("descripcion"));
                 te.setNro_telefono(rs.getString("nro_telefono"));
+                te.setDescripcion(rs.getString("descripcion"));
                 te.setEstado(rs.getString("estado"));
                 
             }

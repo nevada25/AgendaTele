@@ -27,5 +27,5 @@ public interface PersonaDao {
    // public String eliminarProducto(int codigo);
     //public Persona buscarProductoCodigo(int codigo);
     //public Vector<Persona> buscarProducto();
-    public byte[] obtenImagenProducto(int idProducto);
+    public byte[] obtenImagenPersona(int idPer);
 }

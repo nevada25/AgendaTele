@@ -1,3 +1,6 @@
+<%@page import="daoimpl1.PersonaDaoImpl"%>
+<%@page import="dao1.PersonaDao"%>
+<%@page import="bean.Persona"%>
 <%@page import="daoimpl1.PersonaCorreoDaoImpl"%>
 <%@page import="dao1.PersonaCorreoDao"%>
 <%@page import="bean.PersonaCorreo"%>
@@ -13,6 +16,9 @@
 <jsp:useBean id="alert" scope="request" class="java.lang.String" />
 <jsp:useBean id="mensaje" scope="request" class="java.lang.String" />
 <jsp:useBean id="PersonaCorreo" scope="request" class="bean.PersonaCorreo" />
+<style>tr>th,tr>td{
+    text-align: center;
+}</style>
 <%    String opcion = request.getParameter("opcion");
     opcion = opcion == null ? " " : opcion;
 
@@ -28,8 +34,14 @@
     t_cor = t_cor == null ? " " : t_cor;
     String t_tel = PersonaCorreo.getId_telefono();
     t_tel = t_tel == null ? " " : t_tel;
+    String t_per = PersonaCorreo.getId_persona();
+    t_per = t_per == null ? " " : t_per;
     String id_per_co = request.getParameter("id_per_co");
     id_per_co = id_per_co == null ? " " : id_per_co;
+     String buscar = request.getParameter("buscar");
+    if (buscar == null) {
+        buscar = "";
+    }
     //llamar entidades
     Telefono t = new Telefono();
     PersonaCorreo pc = new PersonaCorreo();
@@ -40,6 +52,7 @@
     PersonaCorreoDao pcdao = new PersonaCorreoDaoImpl();
     AreaDao adao = new AreaDaoImpl();
     CorreoDao cdao = new CorreoDaoImpl();
+    PersonaDao pdao=new PersonaDaoImpl();
     if (opcion.equals("Listar")) {
 %>
 <%@include file="cabeza.jsp" %>
@@ -53,21 +66,37 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th class="col-lg-1 text-center">#</th>
-                    <th class="col-lg-5">AREA</th>
-                    <th class="col-lg-3">CORREO</th>
-                    <th class="col-lg-3">TELEFONO</th>
+                    <form name="buscar" method="post" action="InicioSvt?opcion=PersonaCorreo">
+                    <th class="col-lg-4" colspan="4">
+                        <select name="buscar" class="form-control text-center" selected="selected">
+                            <option class="text-center">SELECCIONAR AREA</option>
+                            <%for (Area ar : adao.listarArea()) {%>
+                            <option value="<%=ar.getId_area()%>" <%if (t_are.equals(ar.getId_area())) {%> selected<%}%>><%=ar.getNombre_area()%></option>
+                            <%}%>
+                        </select>
+                    </th>
+                    <th ><input class="btn btn-success form-control" type="submit" value="buscar" name="Enviar" /></th>
                 </tr>
             </thead>
             <tbody>
+                <tr>
+
+                    <td class=" text-center">#</td>
+                    <td class="col-lg-4">PERSONA</td>
+                    <td class="col-lg-2">AREA</td>
+                    <td class="col-lg-3">CORREO</td>
+                    <td class="col-lg-3">TELEFONO</td>
+
+                </tr>
                 <%            int count = 0;
-                    for (PersonaCorreo lista : pcdao.VerPersonaCorreo()) {
+                    for (PersonaCorreo lista : pcdao.VerPersonaCorreo(buscar)) {
                         count++;
                 %>
                 <tr>
 
-                    <td class="col-lg-1 text-center"><%=count%></td>
-                    <td class="col-lg-5"><%=lista.getArea()%></td>
+                    <td class=" text-center"><%=count%></td>
+                    <td class="col-lg-4"><%=lista.getPersona()%></td>
+                    <td class="col-lg-2"><%=lista.getArea()%></td>
                     <td class="col-lg-3"><%=lista.getCorreo()%></td>
                     <td class="col-lg-3"><%=lista.getTelefono()%></td>
 
@@ -90,7 +119,7 @@
 <script>
     alertify.<%=alert%>("<%=mensaje%>");
 </script>
-<div class="panel-heading">
+<div class="panel-info">
     <center><h1><b>PERSONA CORREO</b></h1></center>
 </div>
 <div class="panel-body">
@@ -128,9 +157,10 @@
         <thead>
             <tr>
                 <th class="text-center">#</th>
-                <th class="col-lg-5">AREA</th>
-                <th class="col-lg-3">CORREO</th>
-                <th class="col-lg-3">TELEFONO</th>
+                <th class="col-lg-3">PERSONA</th>
+                <th class="col-lg-1">AREA</th>
+                <th class="col-lg-2">CORREO</th>
+                <th class="col-lg-2">TELEFONO</th>
                 <th colspan="2" class="col-lg-4 text-center">OPCIONES <a class="btn btn-info  material-icons" href="javascript:void(0)" onclick="javascript:AgregarPersonaCorreo()" data-toggle="modal" data-target="#agregar" >add</a></th>
             </tr>
         </thead>
@@ -142,10 +172,11 @@
             %>
             <tr>
 
-                <td class="col-lg-1 text-center"><%=count%></td>
-                <td class="col-lg-5"><%=lista.getArea()%></td>
-                <td class="col-lg-3"><%=lista.getCorreo()%></td>
-                <td class="col-lg-3"><%=lista.getTelefono()%></td>
+                <td class=" text-center"><%=count%></td>
+                <td class="col-lg-3"><%=lista.getPersona()%></td>
+                <td class="col-lg-1"><%=lista.getArea()%></td>
+                <td class="col-lg-2"><%=lista.getCorreo()%></td>
+                <td class="col-lg-2"><%=lista.getTelefono()%></td>
                 <td class="col-lg-2 text-center"><a class="btn btn-warning glyphicon glyphicon-pencil" href="javascript:void(0)" onclick="javascript:EditarPerCo('<%=lista.getIdpercorreo()%>')" data-toggle="modal" data-target="#Editar" ></a></td>
                     <%----%>
                 <td class="col-lg-2 text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="ControlPeCorSvt?opcion=Eliminar&id_telefono=<%=lista.getIdpercorreo()%>"></a></td>
@@ -192,6 +223,14 @@
             <div class="col-lg-2"><div class="resuls"></div></div>
             <center>
                 <div class="">
+                    <div class="form-group">
+                        <select name="Persona" class="form-control text-center">
+                            <option class="text-center">SELECCIONAR PERSONA</option>
+                            <%for (Persona per: pdao.ListarPersona()) {%>
+                            <option value="<%=per.getId_persona()%>"><%=per.getNombres()%></option>
+                            <%}%>
+                        </select>
+                    </div> 
                     <div class="form-group">
 
                         <select name="Correo" class="form-control text-center">
@@ -240,6 +279,15 @@
             <div class="col-lg-2"></div>
             <center>
                 <div class="">
+                     <div class="form-group">
+                        <label class="control-label text-left">PERSONA:</label>
+                         <select name="Persona" class="form-control text-center" selected="selected">
+                            <option class="text-center">SELECCIONAR PERSONA</option>
+                            <%for (Persona per: pdao.ListarPersona()) {%>
+                            <option value="<%=per.getId_persona()%>" <%if (t_per.equals(per.getId_persona())) {%> selected<%}%>><%=per.getNombres()%></option>
+                            <%}%>
+                        </select>
+                    </div> 
                     <div class="form-group">
                         <label class="control-label text-left">AREA:</label>
                         <select name="Area" class="form-control text-center" selected="selected">
@@ -276,4 +324,118 @@
         </div>
     </div>
 </form>
-<%}%>
+<%}
+    if (opcion.equals("Modificar2")) {
+%>
+<%@include file="cabeza.jsp" %>
+<script>
+    alertify.<%=alert%>("<%=mensaje%>");
+</script>
+<div class="panel-info">
+    <center><h1><b>PERSONA CORREO</b></h1></center>
+</div>
+<div class="panel-body">
+    <div class="col-lg-1"></div>
+
+    <table class="table table-bordered table-hover table-responsive">
+        <div class="modal fade" id="agregar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">     
+
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="background: #1b6d85;color: #ffffff; border-radius: 0;">
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 style="text-align: center;"><span class="glyphicon glyphicon-lock"></span><b>AGREGAR PERSONA CORREO</b></h3>
+                    </div>
+                    <div class="modal-body" style="padding:40px 50px;">  
+                        <div id="pc_resul"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="Editar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">     
+
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="background: #1b6d85;color: #ffffff; border-radius: 0;">
+                    <div class="modal-header" >
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 style="text-align: center;"><span class="glyphicon glyphicon-lock"></span><b> EDITAR PERSONA CORREO</b></h3>
+                    </div>
+                    <div class="modal-body" style="padding:40px 50px;">  
+                        <div id="pcEdi_resul"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <thead>
+            <tr>
+                <th class="text-center">#</th>
+                <th class="col-lg-3">PERSONA</th>
+                <th class="col-lg-1">AREA</th>
+                <th class="col-lg-2">CORREO</th>
+                <th class="col-lg-2">TELEFONO</th>
+                <th colspan="2" class="col-lg-4 text-center">OPCIONES <a class="btn btn-info  material-icons" href="javascript:void(0)" onclick="javascript:AgregarPersonaCorreo()" data-toggle="modal" data-target="#agregar" >add</a></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <%            int count = 0;
+               for(PersonaCorreo listap:pcdao.ReadPersonaCorreo()){
+                    count++;
+            %>
+            <tr>
+                <td class=" text-center"><%=count%></td>
+              
+                <td class="col-lg-3"><%=listap.getPersona()%></td>
+               <%
+                   String s=listap.getId_persona();
+              for(PersonaCorreo listapc:pcdao.VerPersonaCorreoArea(s)){ 
+                %>
+                <td class="col-lg-1"><%=listapc.getArea()%></td>
+                <%}
+                     String ae=listap.getId_correo();
+              for(PersonaCorreo listapcs:pcdao.VerPersonaCorreoCorreo(ae)){ 
+              %>
+                <td class="col-lg-2"><%=listapcs.getCorreo()%></td>
+                <%}
+                String aec=listap.getId_telefono();
+              for(PersonaCorreo listapcsa:pcdao.VerPersonaCorreoNumero(aec)){ 
+                %>
+                <td class="col-lg-2"><%=listapcsa.getTelefono()%></td>
+                <%}%>
+                <td class="col-lg-2 text-center"><a class="btn btn-warning glyphicon glyphicon-pencil" href="javascript:void(0)" onclick="javascript:EditarPerCo('<%=listap.getIdpercorreo()%>')" data-toggle="modal" data-target="#Editar" ></a></td>
+                    <%----%>
+                <td class="col-lg-2 text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="ControlPeCorSvt?opcion=Eliminar&id_telefono=<%=listap.getIdpercorreo()%>"></a></td>
+            </tr>
+            <%
+                }
+            %>
+        </tbody>
+
+    </table>
+
+    <div class="col-lg-1"></div>
+
+</div>
+
+
+<script type="text/javascript">
+    function AgregarPersonaCorreo()
+    {
+        $("#pc_resul").hide("slow");
+        $("#pc_resul").load("PersonaCorreo.jsp?opcion=AGREGAR", function () {
+            $("#pc_resul").show("slow");
+        });
+    }
+</script>
+<script type="text/javascript">
+    function EditarPerCo(idpercorreo)
+    {
+        $("#pcEdi_resul").hide("slow");
+        $("#pcEdi_resul").load("ControlPeCorSvt?opcion=Actualizando&Id_Per_Correo=" + idpercorreo, " ", function () {
+            $("#pcEdi_resul").show("slow");
+        });
+    }
+</script>
+<%@include file="pie.jsp" %>
+<%
+    }%>

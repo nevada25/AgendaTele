@@ -42,7 +42,7 @@ public class conectar {
 
         AreaDao ar = new AreaDaoImpl();
 //     c.listarPEr();
-//    c.conecctar();
+    c.conecctar();
 //area llamadas
 //    c.listaarea();
 //    c.agregararea();
@@ -50,7 +50,8 @@ public class conectar {
 //c.TelefonoId();
 //c.PErsomaCorreoid();
 //c.PersonaId();
-c.agregarper();
+//c.agregarper();
+//c.actualizarpers();
 //      c.eliminararea();
 //c.areaid();
 //c.listaCorreo();
@@ -127,7 +128,23 @@ System.out.println("PERSONA CORREO:" + aco.getIdpercorreo());
         
 
     }
+public void actualizarpers(){
+Persona p=new Persona();
+PersonaDao dao=new PersonaDaoImpl();
 
+p.setId_persona("7");
+p.setNombres("JOSE");
+p.setApemat("LOZANO");
+p.setApepat("LINARES");
+p.setCargo("AGRICULTOR");
+p.setCodigo("789456132");
+    if (dao.ActualizarPersonas(p)) {
+        System.out.println("ok");
+    } else {
+        System.out.println("ERROR");
+    }
+
+}
 
     public void listaarea() {
 
@@ -164,13 +181,8 @@ System.out.println("PERSONA CORREO:" + aco.getIdpercorreo());
                 p.setNombres("JJOSE");
                 p.setApepat("erwrw");
                 p.setApemat("wqe");
-                p.setDireccion("wqeq");
-                p.setDni("qweq");
-                p.setFecha_nac("2016-05-09");
                 p.setGenero("F");
-                p.setRuc("poij");
-                p.setTelefono_propio("ds");
-                p.setCodigo_uni("dsad");
+                
         if (dao.ActualizarPersonas(p)) {
             System.out.println("SE actu CORRECTAMENTE");
         } else {
@@ -203,21 +215,21 @@ System.out.println("PERSONA CORREO:" + aco.getIdpercorreo());
 
     }
 
-    public void agregarusu() {
-        UsuarioDao usu = new UsuarioDaoImpl();
-        Usuario u = new Usuario();
-        u.setId_personas(1);
-        u.setLogin("yessy");
-        String claveEmcrip = DigestUtils.md5Hex("yessy");
-        u.setClave(claveEmcrip);
-
-        if (usu.AgregarUsuario(u)) {
-            System.out.println("SE AGREGO CORRECTAMENTE");
-        } else {
-            System.out.println("ERROR AL AGREGAR");
-        }
-
-    }
+//    public void agregarusu() {
+//        UsuarioDao usu = new UsuarioDaoImpl();
+//        Usuario u = new Usuario();
+//        u.setId_personas(1);
+//        u.setLogin("yessy");
+//        String claveEmcrip = DigestUtils.md5Hex("yessy");
+//        u.setClave(claveEmcrip);
+//
+//        if (usu.AgregarUsuario(u)) {
+//            System.out.println("SE AGREGO CORRECTAMENTE");
+//        } else {
+//            System.out.println("ERROR AL AGREGAR");
+//        }
+//
+//    }
 
     public void actuarea() {
         AreaDao ar = new AreaDaoImpl();

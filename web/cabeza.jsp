@@ -4,7 +4,7 @@
 <head>
     <title>AGENDA TELEFONICA</title>
 
-
+    
     <link  href = "css/bootstrap.min.css"  rel = "stylesheet" >
     <link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
     <Script src = "js/html5shiv.min.js"></script>
@@ -15,10 +15,12 @@
           rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="../../js/jquery-2.1.4.min.js"></script>
-     <link rel="stylesheet" href="css/alertify.core.css" />
+    <link rel="stylesheet" href="css/alertify.core.css" />
     <link rel="stylesheet" href="css/alertify.default.css" id="toggleCSS" />
     <script src="js/alertify.min.js"></script>
     <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href="vendors/material-icons/material-design-iconic-font.min.css" rel="stylesheet">
+    <link href="vendors/socicon/socicon.min.css" rel="stylesheet">
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js_ajaxper/funcionajax.js"></script>
     <script type="text/javascript" src="js_ajaxper/jquery-1.2.1.pack.js"></script>
@@ -29,7 +31,7 @@
     HttpSession session1 = request.getSession();
     String usuario = (String) session1.getAttribute("usuario");
     if (usuario == null) {
-        response.sendRedirect("login.jsp");
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 %>
 <body> 
@@ -60,7 +62,7 @@
                             <li><a href="InicioSvt?opcion=Telefono"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Telefono</a></li>
                             <li><a href="InicioSvt?opcion=PersonaCorreo"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Persona Correo</a></li>
                             <li><a href="InicioSvt?opcion=Persona"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Persona</a></li>
-                            
+
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -72,10 +74,10 @@
                             <li><a href="InicioSvt?opcion=ControlPersonaCorreo"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Persona Correo</a></li>
                             <li><a href="InicioSvt?opcion=ControlPersona"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Persona</a></li>
                             <li role="separator" class="divider"></li>
-                            
+
                         </ul>
                     </li>
-
+                    
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -84,7 +86,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="ControlLoginSvt?acciones=VerImagen" style="width: 15px; height:20px;" >
+                                    <img src="<%= session.getAttribute("foto")%>" style="width: 15px; height:20px;" >
                                     <strong><%= session.getAttribute("usuario")%></strong>
                                     <span class="glyphicon glyphicon-chevron-down"></span>
                                 </a>
@@ -94,7 +96,7 @@
                                             <div class="row">
                                                 <div class="col-lg-4">
                                                     <p class="text-center">
-                                                        <img src="ControlLoginSvt?acciones=VerImagen" style="width: 90px; height:120px;" >
+                                                        <img src="<%= session.getAttribute("foto")%>" style="width: 90px; height:120px;" >
                                                     </p>
                                                 </div>
                                                 <div class="col-lg-8">
@@ -133,5 +135,5 @@
     <div class="" >
         <div class="container-fluid main-container">
 
-            <div class="col-lg-12  content" style=" margin-top: -20px;">
+            <div class="col-lg-12  content" style=" margin-top: -22px;">
                 <div class="panel panel-danger" style="height: 550px;">

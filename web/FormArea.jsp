@@ -7,7 +7,9 @@
 <jsp:useBean id="alert" scope="request" class="java.lang.String" />
 <jsp:useBean id="mensaje" scope="request" class="java.lang.String" />
 <jsp:useBean id="Empresa" scope="request" class="bean.Empresa" />
-
+<style>tr>th,tr>td{
+    text-align: center;
+}</style>
 <%    String opcion = request.getParameter("opcion");
     opcion = opcion == null ? " " : opcion;
 
@@ -33,9 +35,9 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th class="col-sm-2 text-center">#</th>
-                    <th class="col-sm-4">EMPRESA</th>
-                    <th class="col-sm-4">AREA</th>
+                    <th class=" text-center">#</th>
+                    <th class="col-lg-6">EMPRESA</th>
+                    <th class="col-lg-6">AREA</th>
 
                 </tr>
             </thead>
@@ -46,9 +48,9 @@
                 %>
                 <tr>
 
-                    <td class="col-sm-2 text-center"><%=count%></td>
-                    <td class="col-sm-4"><%=lista.getNombre_empresa()%></td>
-                    <td class="col-sm-4"><%=lista.getNombre_area()%></td>
+                    <td class="text-center"><%=count%></td>
+                    <td class="col-lg-6"><%=lista.getNombre_empresa()%></td>
+                    <td class="col-lg-6"><%=lista.getNombre_area()%></td>
 
                 </tr>
                 <%
@@ -69,12 +71,12 @@
 <script>
     alertify.<%=alert%>("<%=mensaje%>");
 </script>
-<div class="panel-heading">
+<div class="panel-info">
     <center><h1><b>AREA</b></h1></center>
 </div>
 <div class="panel-body">
-    <div></div>
-    <div >
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
         <table class="table table-bordered table-hover table-responsive">
             <div class="modal fade" id="agregar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">     
 
@@ -107,8 +109,8 @@
             <thead>
                 <tr>
                     <th class="text-center">#</th>
-                    <th class="col-lg-4">EMPRESA</th>
-                    <th class="col-lg-4">AREA</th>
+                    <th class="col-lg-5">EMPRESA</th>
+                    <th class="col-lg-5">AREA</th>
                     <th colspan="2" class="col-lg-2 text-center">OPCIONES <a class="btn btn-info  material-icons" href="javascript:void(0)" onclick="javascript:AgregarArea()" data-toggle="modal" data-target="#agregar" >add</a></th>
                 </tr>
             </thead>
@@ -121,8 +123,8 @@
                 <tr>
 
                     <td class=" text-center"><%=count%></td>
-                    <td class="col-lg-4"><%=lista.getNombre_empresa()%></td>
-                    <td class="col-lg-4"><%=lista.getNombre_area()%></td>
+                    <td class="col-lg-5"><%=lista.getNombre_empresa()%></td>
+                    <td class="col-lg-5"><%=lista.getNombre_area()%></td>
                     <td class="col-lg-1 text-center"><a class="btn btn-warning glyphicon glyphicon-pencil" href="javascript:void(0)" onclick="javascript:EditarArea('<%=lista.getId_area()%>')" data-toggle="modal" data-target="#Editar"></a></td>
                     <td class="col-lg-1 text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="ControlAreaSvt?opcion=Eliminar&id_area=<%=lista.getId_area()%>"></a></td>
                 </tr>
@@ -133,7 +135,7 @@
 
         </table>
     </div>
-    <div class="col-lg-1"></div>
+    <div class="col-lg-2"></div>
 
 </div>
 

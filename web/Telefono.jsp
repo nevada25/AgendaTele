@@ -10,7 +10,9 @@
 <jsp:useBean id="alert" scope="request" class="java.lang.String" />
 <jsp:useBean id="mensaje" scope="request" class="java.lang.String" />
 <jsp:useBean id="Telefono" scope="request" class="bean.Telefono" />
-
+<style>tr>th,tr>td{
+    text-align: center;
+}</style>
 <%    String opcion = request.getParameter("opcion");
     opcion = opcion == null ? " " : opcion;
  
@@ -39,10 +41,9 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th class="col-lg-1 text-center">#</th>
-                    <th class="col-lg-5">NOMBRE</th>
-                    <th class="col-lg-3">NUMERO</th>
-                    <th class="col-lg-3">OPERADOR</th>
+                    <th class="text-center">#</th>
+                    <th class="col-lg-6">NUMERO</th>
+                    <th class="col-lg-6">OPERADOR</th>
 
 
                 </tr>
@@ -54,10 +55,9 @@
                 %>
                 <tr>
 
-                    <td class="col-lg-1 text-center"><%=count%></td>
-                    <td class="col-lg-5"><%=lista.getEstado()%></td>
-                    <td class="col-lg-3"><%=lista.getNro_telefono()%></td>
-                    <td class="col-lg-3"><%=lista.getDescripcion()%></td>
+                    <td class="text-center"><%=count%></td>
+                    <td class="col-lg-6"><%=lista.getNro_telefono()%></td>
+                    <td class="col-lg-6"><%=lista.getDescripcion()%></td>
 
                 </tr>
                 <%
@@ -78,7 +78,7 @@
 <script>
     alertify.<%=alert%>("<%=mensaje%>");
 </script>
-<div class="panel-heading">
+<div class="panel-info">
     <center><h1><b>TELEFONO</b></h1></center>
 </div>
 <div class="panel-body">
@@ -116,10 +116,9 @@
         <thead>
             <tr>
                 <th class="text-center">#</th>
-                <th class="col-lg-4">NOMBRE</th>
-                <th class="col-lg-2">NUMERO</th>
-                <th class="col-lg-2">OPERADOR</th>
-                <th colspan="2" class="col-lg-4 text-center">OPCIONES <a class="btn btn-info  material-icons" href="javascript:void(0)" onclick="javascript:AgregarArea()" data-toggle="modal" data-target="#agregar" >add</a></th>
+                <th class="col-lg-3">NUMERO</th>
+                <th class="col-lg-3">OPERADOR</th>
+                <th colspan="2" class="col-lg-6 text-center">OPCIONES <a class="btn btn-info  material-icons" href="javascript:void(0)" onclick="javascript:AgregarArea()" data-toggle="modal" data-target="#agregar" >add</a></th>
             </tr>
         </thead>
 
@@ -131,11 +130,10 @@
             <tr>
 
                 <td class="text-center"><%=count%></td>
-                <td class="col-lg-4"><%=lista.getEstado()%></td>
-                <td class="col-lg-2"><%=lista.getNro_telefono()%></td>
-                <td class="col-lg-2"><%=lista.getDescripcion()%></td>
-                <td class="col-lg-2 text-center"><a class="btn btn-warning glyphicon glyphicon-pencil" href="javascript:void(0)" onclick="javascript:EditarArea('<%=lista.getId_telefono()%>')" data-toggle="modal" data-target="#Editar"></a></td>
-                <td class="col-lg-2 text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="ControlTelefonoSvt?opcion=Eliminar&id_telefono=<%=lista.getId_telefono()%>"></a></td>
+                <td class="col-lg-3"><%=lista.getNro_telefono()%></td>
+                <td class="col-lg-3"><%=lista.getDescripcion()%></td>
+                <td class="col-lg-3 text-center"><a class="btn btn-warning glyphicon glyphicon-pencil" href="javascript:void(0)" onclick="javascript:EditarArea('<%=lista.getId_telefono()%>')" data-toggle="modal" data-target="#Editar"></a></td>
+                <td class="col-lg-3 text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="ControlTelefonoSvt?opcion=Eliminar&id_telefono=<%=lista.getId_telefono()%>"></a></td>
             </tr>
             <%
                 }
@@ -156,7 +154,25 @@
         $("#Area_resul").load("ControlTelefonoSvt?opcion=Agregando", function () {
             $("#Area_resul").show("slow");
         });
+        $(function () {
+    function validarfields(Numero,per,opera){
+        if(per != "SELECCIONE UNA OPCION"){
+            if(Numero.length>1 && Numero.length<=9){
+             if(opera != "SELECCIONE UNA OPCION"){
+            
+        }else{alert("POR FAVOR SELECCIONE UNA OPCION");}
+        }else{alert("INGRESAR SOLO 9 NUMEROS");}
+    }else{alert("POR FAVOR SELECCIONE UN NOMBRE");}
+    }});
+
     }
+    $('#btnCrearTelefono').click(function (e) {
+        e.preventDefault();
+        var Numero = $('#Numero').val();
+        var per = $('#per').val();
+        var opera = $('#opera').val();
+       validarfields(Numero, per, opera);
+  });
 </script>
 <script type="text/javascript">
     function EditarArea(id_telefono)
@@ -172,7 +188,11 @@
     }
     if (opcion.equals("AGREGAR")) {
 %>
-
+<style>
+    div>select>option{
+        text-align: center;
+    }
+</style>
 <form name="Telefono" action="ControlTelefonoSvt" method="POST">
 
     <div class="modal-body">
@@ -181,26 +201,18 @@
             <center>
                 <div class="">
                     <div class="form-group">
-                        <select name="Persona" class="form-control text-center">
-                            <option class="text-center">SELECCIONAR NOMBRE</option>
-                            <%for (Persona per : pdao.ListarPersona()) {%>
-                            <option value="<%=per.getId_persona()%>"><%=per.getNombres()%></option>
-                            <%}%>
-                        </select>
+                        <input type="number" class="form-control text-center text-success" id="Numero" name="Numero" placeholder="INGRESAR NUMERO"  required>    
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control text-center text-success" id="Numero" name="Numero" placeholder="INGRESAR NUMERO" maxlength="9" required>    
-                    </div>
-                    <div class="form-group">
-                        <select name="Operador" class="form-control text-center">
-                            <option class="text-center">SELECCIONAR OPERADOR</option>
+                        <select name="Operador" id="opera" class="form-control text-center" required>
+                            <option class="text-center" value="SELECCIONE UNA OPCION"><center>SELECCIONAR OPERADOR</center></option>
                             <%for (Operador op : odao.listarOperador()) {%>
                             <option value="<%=op.getId_operador()%>"><%=op.getOperadora_nombre()%></option>
                             <%}%>
                         </select>
                     </div>
                     <div class="form-group">
-                        <button type="submit" name="opcion" value="Agregar" class="btn btn-success glyphicon glyphicon-saved">GUARDAR</button>
+                        <button type="submit" name="opcion" id="btnCrearTelefono" value="Agregar" class="btn btn-success glyphicon glyphicon-saved">GUARDAR</button>
                     </div>
 
                 </div>
@@ -221,17 +233,10 @@
             <center>
                 <div class="">
                     <div class="form-group">
-                        <select name="Persona" class="form-control text-center" selected="selected">
-                            <%for (Persona per : pdao.ListarPersona()) {%>
-                            <option value="<%=per.getId_persona()%>"<%if (t_per.equals(per.getId_persona())) {%> selected<%}%>><%=per.getNombres()%></option>
-                            <%}%>
-                        </select>
+                        <input type="number" class="form-control text-center text-success" id="Numero" name="Numero" placeholder="INGRESAR NUMERO" value="<%=Tel.getNro_telefono()%>" required>    
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control text-center text-success" id="Numero" name="Numero" placeholder="INGRESAR NUMERO" value="<%=Tel.getNro_telefono()%>" required>    
-                    </div>
-                    <div class="form-group">
-                        <select name="Operador" class="form-control text-center" selected="selected">
+                        <select name="Operador" class="form-control text-center" selected="selected" required>
                             <%for (Operador oper: odao.listarOperador()) {%>
                             <option value="<%=oper.getId_operador()%>"<%if (t_oper.equals(oper.getId_operador())) {%> selected<%}%>><%=oper.getOperadora_nombre()%></option>
                             <%}%>

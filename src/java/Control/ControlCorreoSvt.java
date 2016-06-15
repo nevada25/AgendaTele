@@ -92,7 +92,7 @@ public class ControlCorreoSvt extends HttpServlet {
 
                 } else {
                     alert = "error";
-                    mensaje = "SE ERROR AL ELIMINAR";
+                    mensaje = "SE ERROR AL ELIMINAR O DATO SE ESTA UTILIZANDO";
                     request.setAttribute("mensaje", mensaje);
                     request.setAttribute("alert", alert);
                     request.getRequestDispatcher("Correo.jsp?opcion=Modificar").forward(request, response);

@@ -10,7 +10,9 @@
 <jsp:useBean id="alert" scope="request" class="java.lang.String" />
 <jsp:useBean id="mensaje" scope="request" class="java.lang.String" />
 <jsp:useBean id="Persona" scope="request" class="bean.Persona" />
-
+<style>tr>th,tr>td{
+    text-align: center;
+}</style>
 <%    String opcion = request.getParameter("opcion");
     opcion = opcion == null ? " " : opcion;
 
@@ -35,15 +37,12 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th class="col-sm-2 text-center">#</th>
-                    <th class="col-sm-4">NOMBRE</th>
-                    <th class="col-sm-4">GENERO</th>
-                    <th class="col-sm-4">DNI</th>
-                    <th class="col-sm-4">FECHA NACIMIENTO</th>
-                    <th class="col-sm-4">TELEFONO</th>
-                    <th class="col-sm-4">DIRECCI&Oacute;N</th>
-                    <th class="col-sm-4">CODIGO UNIVERSITARIO</th>
-                    
+                    <th class= text-center">#</th>
+                    <th class="col-lg-4">NOMBRE</th>
+                    <th class="col-lg-2">GENERO</th>
+                    <th class="col-lg-3">CODIGO UNIVERSITARIO</th>
+                    <th class="col-lg-3">CARGO</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -53,21 +52,19 @@
                 %>
                 <tr>
 
-                    <td class="col-sm-2 text-center"><%=count%></td>
-                    <td class="col-sm-4"><%=lista.getNombres()%></td>
-                    <td class="col-sm-4"><%=lista.getGenero()%></td>
-                    <td class="col-sm-4"><%=lista.getDni()%></td>
-                    <td class="col-sm-4"><%=lista.getFecha_nac()%></td>
-                    <td class="col-sm-4"><%=lista.getTelefono_propio()%></td>
-                    <td class="col-sm-4"><%=lista.getDireccion()%></td>
-                    <td class="col-sm-4"><%=lista.getCodigo_uni()%></td>
-                    
-            </td>
+                    <td class="text-center"><%=count%></td>
+                    <td class="col-lg-4"><%=lista.getNombres()%></td>
+                    <td class="col-lg-2"><%=lista.getGenero()%></td>
+                    <td class="col-lg-3"><%=lista.getCodigo()%></td>
+                    <td class="col-lg-3"><%=lista.getCargo()%></td>
 
-            </tr>
-            <%
 
-                }%>
+                    </td>
+
+                </tr>
+                <%
+
+                    }%>
             </tbody>
         </table>
     </div>
@@ -83,7 +80,7 @@
 <script>
     alertify.<%=alert%>("<%=mensaje%>");
 </script>
-<div class="panel-heading">
+<div class="panel-info">
     <center><h1><b>PERSONA</b></h1></center>
 </div>
 <div class="panel-body">
@@ -97,7 +94,21 @@
                     <div class="modal-content" style="background: #1b6d85;color: #ffffff; border-radius: 0;">
                         <div class="modal-header" >
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h3 style="text-align: center;"><span class="glyphicon glyphicon-lock"></span><b>AGREGAR AREA</b></h3>
+                            <h3 style="text-align: center;"><span class="glyphicon glyphicon-lock"></span><b>AGREGAR PERSONA</b></h3>
+                        </div>
+                        <div class="modal-body" style="padding:40px 50px;">  
+                            <div id="Persona_resul"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="ListarDatos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">     
+
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="background: #1b6d85;color: #ffffff; border-radius: 0;">
+                        <div class="modal-header" >
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h3 style="text-align: center;"><span class="glyphicon glyphicon-lock"></span><b>AGREGAR PERSONA</b></h3>
                         </div>
                         <div class="modal-body" style="padding:40px 50px;">  
                             <div id="Persona_resul"></div>
@@ -111,7 +122,7 @@
                     <div class="modal-content" style="background: #1b6d85;color: #ffffff; border-radius: 0;">
                         <div class="modal-header" >
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h3 style="text-align: center;"><span class="glyphicon glyphicon-lock"></span><b> EDITAR AREA</b></h3>
+                            <h3 style="text-align: center;"><span class="glyphicon glyphicon-lock"></span><b> EDITAR PERSONA</b></h3>
                         </div>
                         <div class="modal-body" style="padding:40px 50px;">  
                             <div id="PersonaEdi_resul"></div>
@@ -122,13 +133,10 @@
             <thead>
                 <tr>
                     <th class=" text-center">#</th>
-                    <th class="col-lg-5">NOMBRE</th>
-                    <th class="">GENERO</th>
-                    <th class="">DNI</th>
-                    <th class="col-lg-2">FECHA NACIMIENTO</th>
-                    <th class="">TELEFONO</th>
-                    <th class="col-lg-5">DIRECCI&Oacute;N</th>
-                    <th class="">CODIGO UNIVERSITARIO</th>
+                    <th class="col-lg-3">NOMBRE</th>
+                    <th class="col-lg-2">GENERO</th>
+                    <th class="col-lg-2">CODIGO UNIVERSITARIO</th>
+                    <th class="col-lg-3">CARGO</th>
 
                     <th colspan="2" class="col-lg-2 text-center">OPCIONES <a class="btn btn-info  material-icons" href="javascript:void(0)" onclick="javascript:AgregarArea()" data-toggle="modal" data-target="#agregar" >add</a></th>
                 </tr>
@@ -142,19 +150,17 @@
                 <tr>
 
                     <td class="text-center"><%=count%></td>
-                    <td class="col-lg-5"><%=lista.getNombres()%></td>
-                    <td class=""><%=lista.getGenero()%></td>
-                    <td class=""><%=lista.getDni()%></td>
-                    <td class=""><%=lista.getFecha_nac()%></td>
-                    <td class=""><%=lista.getTelefono_propio()%></td>
-                    <td class="col-lg-5"><%=lista.getDireccion()%></td>
-                    <td class=""><%=lista.getCodigo_uni()%></td>
-            <td class="col-lg-1 text-center"><a class="btn btn-warning glyphicon glyphicon-pencil" href="javascript:void(0)" onclick="javascript:EditarPersona('<%=lista.getId_persona()%>')" data-toggle="modal" data-target="#Editar"></a></td>
-            <td class="col-lg-1 text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="ControlPersonaSvt?opcion=Eliminar&Id_persona=<%=lista.getId_persona()%>"></a></td>
-            </tr>
-            <%
+                    <td class="col-lg-3"><%=lista.getNombres()%></td>
+                    <td class="col-lg-2"><%=lista.getGenero()%></td>
+                    <td class="col-lg-2"><%=lista.getCodigo()%></td>
+                    <td class="col-lg-3"><%=lista.getCargo()%></td>
+                    <%--<td class="col-lg-1 text-center"><a class="btn btn-warning glyphicon glyphicon-zoom-in" href="Persona.jsp?opcion=Datos&Id_persona=<%=lista.getId_persona()%>" data-toggle="modal" data-target="#ListarDatos"></a></td>---%>
+                    <td class="col-lg-1 text-center"><a class="btn btn-warning glyphicon glyphicon-pencil" href="javascript:void(0)" onclick="javascript:EditarPersona('<%=lista.getId_persona()%>')" data-toggle="modal" data-target="#Editar"></a></td>
+                    <td class="col-lg-1 text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="ControlPersonaSvt?opcion=Eliminar&Id_persona=<%=lista.getId_persona()%>"></a></td>
+                </tr>
+                <%
 
-                }%>
+                    }%>
             </tbody>
 
         </table>
@@ -182,6 +188,15 @@
         });
     }
 </script>
+<script type="text/javascript">
+    function VerPersona(Id_persona)
+    {
+        $("#PersonaEdi_resul").hide("slow");
+        $("#PersonaEdi_resul").load("ControlPersonaSvt?opcion=VerPersona&Id_persona=" + Id_persona, "", function () {
+            $("#PersonaEdi_resul").show("slow");
+        });
+    }
+</script>
 <%@include file="pie.jsp" %>
 <%
     }
@@ -197,53 +212,33 @@
                 <div class="">
 
                     <div class="form-group">
-                        
-                        <input type="text" class="form-control text-center text-success" id="Nombre" name="Nombre" placeholder="INGRESAR NOMBRE" required>    
+
+                        <input type="text" class="form-control text-center text-success" id="Nombre" name="Nombre" placeholder="INGRESAR NOMBRE">    
                     </div>
                     <div class="form-group">
-                        
-                        <input type="text" class="form-control text-center text-success" id="Apepat" name="Apepat" placeholder="INGRESAR APELLIDO PATERNO" required>    
+
+                        <input type="text" class="form-control text-center text-success" id="Apepat" name="Apepat" placeholder="INGRESAR APELLIDO PATERNO">    
                     </div>
                     <div class="form-group">
-                        
-                        <input type="text" class="form-control text-center text-success" id="Apemat" name="Apemat" placeholder="INGRESAR APELLIDO MATERNO" required>    
+                        <input type="text" class="form-control text-center text-success" id="Apemat" name="Apemat" placeholder="INGRESAR APELLIDO MATERNO" >    
                     </div>
                     <div class="form-group"><table border="0">
                             <thead>
                                 <tr class="form-group form-control">
-                                    
+
                                     <th>MASCULINO</th>
                                     <th><input type="radio" name="genero" value="M" /></th>
                                     <th>FEMENINO</th>
                                     <th><input type="radio" name="genero" value="F" /></th>
                                 </tr>
-
                             </thead>
                         </table>
                     </div>
                     <div class="form-group">
-                       
-                      <input type="text" class="form-control text-center text-success" id="DNI" maxlength="8" name="DNI" placeholder="INGRESAR DNI" required>    
+                        <input type="text" class="form-control text-center text-success" id="Cargo"  name="Cargo"  placeholder="INGRESAR CARGO">    
                     </div>
                     <div class="form-group">
-                       
-                        <input type="date" name="fecha_naci" style="color: #000000;">
-                    </div>
-                    <div class="form-group">
-                        
-                        <input type="text" class="form-control text-center text-success" id="Telefono" name="Telefono" maxlength="9" placeholder="INGRESAR TELEFONO" required>    
-                    </div>
-                    <div class="form-group">
-                        
-                        <input type="text" class="form-control text-center text-success" id="Ruc" name="Ruc" maxlength="12" placeholder="INGRESAR RUC" >    
-                    </div>
-                    <div class="form-group">
-                       
-                        <input type="text" class="form-control text-center text-success" id="Direccion" name="Direccion" placeholder="INGRESAR DIRECCION" required>    
-                    </div>
-                    <div class="form-group">
-                       
-                        <input type="text" class="form-control text-center text-success" id="Codigo_uni" name="Codigo_uni" maxlength="9" placeholder="INGRESAR CODIGO UNIVERSITARIO" required>    
+                        <input type="text" class="form-control text-center text-success" id="Codigo_uni" maxlength="9" name="Codigo_uni"  placeholder="INGRESAR CODIGO UNIVERSITARIO">    
                     </div>
 
                     <div class="form-group">
@@ -270,52 +265,27 @@
 
                     <div class="form-group">
                         <label>NOMBRE:</label>
-                        <input type="text" class="form-control text-center text-success" id="Nombre" name="Nombre" placeholder="INGRESAR NOMBRE" value="<%=pao.getNombres()%>" required>    
+                        <input type="text" class="form-control text-center text-success" id="Nombre" name="Nombre" placeholder="INGRESAR NOMBRE" value="<%=pao.getNombres()%>" >    
                     </div>
                     <div class="form-group">
                         <label>APELLIDO PATERNO:</label>
-                        <input type="text" class="form-control text-center text-success" id="Apepat" name="Apepat" placeholder="INGRESAR APELLIDO PATERNO" value="<%=pao.getApepat()%>" required>    
+                        <input type="text" class="form-control text-center text-success" id="Apepat" name="Apepat" placeholder="INGRESAR APELLIDO PATERNO" value="<%=pao.getApepat()%>" >    
                     </div>
                     <div class="form-group">
                         <label>APELLIDO MATERNO:</label>
-                        <input type="text" class="form-control text-center text-success" id="Apemat" name="Apemat" placeholder="INGRESAR APELLIDO MATERNO" value="<%=pao.getApemat()%>" required>    
-                    </div>
-                    <div class="form-group"><table border="0">
-                            <thead>
-                                <tr class="form-group form-control">
-                                    <label>GENERO:</label>
-                                    <th>MASCULINO</th>
-                                    <th><input type="radio" name="genero" value="M" /></th>
-                                    <th>FEMENINO</th>
-                                    <th><input type="radio" name="genero" value="F" /></th>
-                                </tr>
-
-                            </thead>
-                        </table>
+                        <input type="text" class="form-control text-center text-success" id="Apemat" name="Apemat" placeholder="INGRESAR APELLIDO MATERNO" value="<%=pao.getApemat()%>" >    
                     </div>
                     <div class="form-group">
-                         <label>DNI:</label>
-                        <input type="text" class="form-control text-center text-success" id="DNI" name="DNI" maxlength="8" placeholder="INGRESAR DNI" value="<%=pao.getDni()%>" required>    
+                        <label>GENERO:</label>
+                        <input type="text" class="form-control text-center text-success" id="Genero" name="Genero" placeholder="INGRESAR APELLIDO MATERNO" value="<%=pao.getGenero()%>" disabled>    
                     </div>
                     <div class="form-group">
-                        <label> FECHA NACIMIENTO:</label>
-                        <input type="date" name="fecha_naci" style="color: #000000;" value="<%=pao.getFecha_nac()%>">
+                        <label>CARGO:</label>
+                        <input type="text" class="form-control text-center text-success" id="Cargo"  name="Cargo" value="<%=pao.getCargo()%>" placeholder="INGRESAR CODIGO UNIVERSITARIO" >    
                     </div>
                     <div class="form-group">
-                        <label>TELEFONO:</label>
-                        <input type="text" class="form-control text-center text-success" maxlength="9" id="Telefono" value="<%=pao.getTelefono_propio()%>" name="Telefono" placeholder="INGRESAR TELEFONO" required>    
-                    </div>
-                    <div class="form-group">
-                        <label>RUC:</label>
-                        <input type="text" class="form-control text-center text-success" maxlength="12" id="Ruc" name="Ruc" value="<%=pao.getRuc()%>" placeholder="INGRESAR RUC" >    
-                    </div>
-                    <div class="form-group">
-                         <label>DIRECCION:</label>
-                        <input type="text" class="form-control text-center text-success" id="Direccion" name="Direccion" placeholder="INGRESAR DIRECCION" value="<%=pao.getDireccion()%>" required>    
-                    </div>
-                    <div class="form-group">
-                         <label>CODIGO UNIVERSITARIO:</label>
-                        <input type="text" class="form-control text-center text-success" id="Codigo_uni" maxlength="9" name="Codigo_uni" value="<%=pao.getCodigo_uni()%>" placeholder="INGRESAR CODIGO UNIVERSITARIO" required>    
+                        <label>CODIGO UNIVERSITARIO:</label>
+                        <input type="text" class="form-control text-center text-success" id="Codigo_uni" maxlength="9" name="Codigo_uni" value="<%=pao.getCodigo()%>" placeholder="INGRESAR CODIGO UNIVERSITARIO" >    
                     </div>
 
                     <div class="form-group">
@@ -327,4 +297,12 @@
         </div>
     </div>
 </form>
+<%}
+if(opcion.equals("Datos")){
+Persona pao = pdao.obteneridpe(Id_persona);
+%>
+
+<h1><%=pao.getNombres()%></h1>
+<h1><%=pao.getApepat()%></h1>
+<h1><%=pao.getApemat()%></h1>
 <%}%>

@@ -30,29 +30,34 @@ public class UsuarioDaoImpl implements UsuarioDao{
         return cc.centroConexion();
     }
       private String classFor="com.mysql.jdbc.Driver";
-    private String url="jdbc:mysql://localhost/agenda2016";
-    private String usuario="root";
-    private String clave="root";
+    private String url="jdbc:mysql://mysql.hostinger.es/u671842271_agend";
+    private String usuario="u671842271_agend";
+    private String clave="AgeTele_UPeu2016";
     @Override
     public boolean AgregarUsuario(Usuario usu) {
-         boolean estado=false;
-        Statement st;
-        String sql = "INSERT INTO `usuario`(`id_usuario`, `login`, `clave`, `correo`, `estado`)"
-                   + " VALUES (null,'"+usu.getLogin()+"','"+usu.getClave()+"','"+usu.getCorreo()+"','1')";
+        PreparedStatement pst=null;
+        boolean estado=false;
         try {
-            st=open().createStatement();
-            st.executeUpdate(sql);
-            cc.guardar();
-            cc.cerrar();
-            estado=true;
+        String sql = "INSERT INTO `usuario`(`id_usuario`, `login`, `clave`, `correo`, `img`, `estado`) VALUES (null,?,?,?,?,1)";
+        pst=cc.centroConexion().prepareStatement(sql);
+          pst.setString(1,usu.getLogin());
+            pst.setString(2,usu.getClave());
+            pst.setString(3,usu.getCorreo());
+            pst.setString(4,usu.getImg());
+              if (pst.executeUpdate()==1) {
+                estado=true;
+                System.out.println(sql);
+            }
+            System.out.println(sql); 
             
         } catch (Exception e) {
             e.printStackTrace();    
-            estado=false;
+            }finally{
             try {
-                cc.restaurar();
-                cc.cerrar();
-            } catch (Exception ex) {
+                if (cc.centroConexion() !=null) cc.centroConexion().close(); 
+                if(pst !=null) pst.close();    
+                
+            } catch (Exception e) {
             }
         }
       return estado;
@@ -79,6 +84,7 @@ public class UsuarioDaoImpl implements UsuarioDao{
                 u.setLogin(rs.getString("login"));
                 u.setClave(rs.getString("clave"));      
                 u.setCorreo(rs.getString("correo"));
+                u.setImg(rs.getString("img"));
                 
             }
             open().close();

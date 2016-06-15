@@ -18,7 +18,7 @@ Conexion cn = new Conexion();
         Statement st = null;
         ResultSet rs = null;
         Operador Op = null;
-        String Query = "SELECT `id_operador`, `operadora_nombre`, `estado` FROM `operador`";
+        String Query = "SELECT `id_operador`, UPPER(`operadora_nombre`) as operadora_nombre , `estado` FROM `operador`";
         try {
             lista = new ArrayList<Operador>();
             st = cn.centroConexion().createStatement();

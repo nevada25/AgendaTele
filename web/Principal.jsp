@@ -1,6 +1,6 @@
 <%@include file="cabeza.jsp" %>
 <div class="panel-default">
-    <center><h1><b>WELCOME</b></h1></center>
+    <center><h1><b>BIENVENIDOS</b></h1></center>
 </div>
 <div class="panel-body">
     <div class="col-lg-8 img-circle" >
@@ -77,6 +77,17 @@
         </div>
 
     </div>
-    <div class="col-lg-4">ESTE ES UN SISTEMA DE AGENDA TELEFONICA</div>
+    <div class="col-lg-4">
+        <br><br><br><br><br>
+        <p><b>ESTE ES UN SISTEMA DE AGENDA TELEFONICA HECHA POR LOS ALUMNOS DE DE INGENIERIA DE SISTEMAS 
+            DE QUINTO Y SEXTO CICLO DE LA UNIVERSIDAD PERUANA UNION FILIAL TARAPOTO</b></p>
+            <p><b>INTEGRANTES:</b></p>
+            <p><b>*KEVIN ANTONY CALDERON GUABLOCHE</b></p>
+            <p><b>*YESSY ORDOÑES HUAMAN</b></p>
+            <p><b>*ALONDRA KATERINE PARIACURI SANTOS</b></p>
+            <p><b>*LUIS ALBERTO LAVADO</b></p>
+            
+    
+    </div>
 </div>
 <%@include file="pie.jsp" %>

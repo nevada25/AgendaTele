@@ -11,6 +11,12 @@ import bean.Telefono;
 
 import dao1.PersonaDao;
 import conexion.Conexion;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -24,16 +30,17 @@ import java.util.Vector;
 public class PersonaDaoImpl implements PersonaDao {
 
     Conexion cn = new Conexion();
-
+      private String classFor="com.mysql.jdbc.Driver";
+    private String url="jdbc:mysql://localhost/agenda2016";
+    private String usuario="root";
+    private String clave="root";
     @Override
     public boolean AgregarPersonas(Persona p) {
         boolean estado = false;
         Statement st;
-        String sql = "INSERT INTO `persona`(`id_persona`, `nombres`, `apepat`, `apemat`, `genero`, "
-                + "`dni`, `fecha_nac`, `telefono_propio`, `ruc`, `direccion`, `codigo_uni`, `foto_persona`, `estado`) "
-                + "VALUES (null,'"+p.getNombres()+"','"+p.getApepat()+"','"+p.getApemat()+"','"+p.getGenero()+"',"
-                + " '"+p.getDni()+"','"+p.getFecha_nac()+"','"+p.getTelefono_propio()+"','"+p.getRuc()+"','"+p.getDireccion()+"',"
-                + "'"+p.getCodigo_uni()+"','"+p.getFoto_persona()+"','1')";
+        String sql = "INSERT INTO `persona`(`id_persona`, `nombres`, `apepat`, `apemat`, `genero`, `cargo`, `codigo`, `foto`, `estado`) "
+                   + "VALUES (null,'"+p.getNombres()+"','"+p.getApepat()+"','"+p.getApemat()+"','"+p.getGenero()+"',"
+                   + "'"+p.getCargo()+"','"+p.getCodigo()+"','"+p.getEstado()+"',1)";
         try {
             st = cn.centroConexion().createStatement();
             st.executeUpdate(sql);
@@ -82,10 +89,6 @@ public class PersonaDaoImpl implements PersonaDao {
                 p.setApepat(rs.getString("apepat"));
                 p.setApemat(rs.getString("apemat"));
                 t.setNro_telefono(rs.getString("nro_telefono"));
-                p.setTelefono_propio(rs.getString("telefono_propio"));
-
-                p.setDni(rs.getString("dni"));
-                p.setDireccion(rs.getString("direccion"));
                 list_pers.add(p);
                 cn.cerrar();
             }
@@ -101,11 +104,8 @@ public class PersonaDaoImpl implements PersonaDao {
     public boolean ActualizarPersonas(Persona p) {
         boolean estado = false;
         Statement st;
-        String sql = "UPDATE `persona` SET `nombres`='"+p.getNombres()+"',"
-                   + "`apepat`='"+p.getApepat()+"',`apemat`='"+p.getApemat()+"',`genero`='"+p.getGenero()+"',`dni`='"+p.getDni()+"',"
-                   + "`fecha_nac`='"+p.getFecha_nac()+"',`telefono_propio`='"+p.getTelefono_propio()+"',`ruc`='"+p.getRuc()+"',`"
-                   + "direccion`='"+p.getDireccion()+"',`codigo_uni`='"+p.getCodigo_uni()+"',`foto_persona`='"+p.getFoto_persona()+"',"
-                   + "`estado`='1' WHERE `id_persona`="+p.getId_persona();
+        String sql = "UPDATE `persona` SET `nombres`='"+p.getNombres()+"',`apepat`='"+p.getApepat()+"',`apemat`='"+p.getApemat()+"'"
+                + ",`cargo`='"+p.getCargo()+"',`codigo`='"+p.getCodigo()+"',`foto`='"+p.getFoto()+"',`estado`= 1 WHERE `id_persona`="+p.getId_persona();
         try {
             st = cn.centroConexion().createStatement();
             st.executeUpdate(sql);
@@ -155,22 +155,18 @@ public class PersonaDaoImpl implements PersonaDao {
         Statement st = null;
         ResultSet rs = null;
         Persona p = null;
-        String Query = "SELECT `id_persona`,CONCAT( `nombres`,' ', `apepat`, ' ',`apemat`) as nombre, "
-                + " `genero`, `dni`, `fecha_nac`, `telefono_propio`, `ruc`, `direccion`,"
-                + " `codigo_uni`, `foto_persona`, `estado` FROM `persona` ";
+        String Query = "SELECT `id_persona`, UPPER(CONCAT(`nombres`,' ', `apepat`,' ', `apemat`)) as nombre , `genero`, `cargo`, `codigo`, `foto`, `estado` FROM `persona` ";
         try {
             list_pers = new ArrayList<>();
             st = cn.centroConexion().createStatement();
             rs = st.executeQuery(Query);
             while (rs.next()) {
                 p = new Persona();
-                p.setId_persona(rs.getString("id_persona"));
+        p.setId_persona(rs.getString("id_persona"));
                 p.setNombres(rs.getString("nombre"));
                 p.setGenero(rs.getString("genero"));
-                p.setDni(rs.getString("dni"));
-                p.setFecha_nac(rs.getString("fecha_nac"));
-                p.setDireccion(rs.getString("direccion"));
-                p.setCodigo_uni(rs.getString("codigo_uni"));
+                p.setCargo(rs.getString("cargo"));
+                p.setCodigo(rs.getString("codigo"));
                 p.setEstado(rs.getString("estado"));
                 list_pers.add(p);
                 cn.cerrar();
@@ -187,9 +183,8 @@ public class PersonaDaoImpl implements PersonaDao {
     public Persona obteneridpe(String id_persona) {
         Statement st = null;
         ResultSet rs= null;
-        String query = "SELECT `id_persona`, `nombres`, `apepat`, `apemat`, `genero`, `dni`,"
-                + " `fecha_nac`, `telefono_propio`, `ruc`, `direccion`, `codigo_uni`, `foto_persona`, `estado` "
-                + "FROM `persona` WHERE `id_persona`= "+id_persona;
+        String query = "SELECT `id_persona`, `nombres`, `apepat`, `apemat`, case `genero`when 'M' then 'MASCULINO' when 'F' then 'FEMENINO' "
+                     + "end as `genero`, `cargo`, `codigo`, `foto`, `estado` FROM `persona` WHERE `id_persona`="+id_persona;
         Persona p= null;
         
         try {
@@ -202,14 +197,10 @@ public class PersonaDaoImpl implements PersonaDao {
                 p.setApepat(rs.getString("apepat"));
                 p.setApemat(rs.getString("apemat"));
                 p.setGenero(rs.getString("genero"));
-                p.setDni(rs.getString("dni"));
-                p.setTelefono_propio(rs.getString("telefono_propio"));
-                p.setFecha_nac(rs.getString("fecha_nac"));
-                p.setDireccion(rs.getString("direccion"));
-                p.setRuc(rs.getString("ruc"));
-                p.setCodigo_uni(rs.getString("codigo_uni"));
+               p.setCargo(rs.getString("cargo"));
+                p.setCodigo(rs.getString("codigo"));
                 p.setEstado(rs.getString("estado"));
-                p.setFoto_persona(rs.getBinaryStream("foto_persona"));
+               
             }
             cn.cerrar();
         } catch (Exception e) {
@@ -228,9 +219,9 @@ public class PersonaDaoImpl implements PersonaDao {
         Statement st = null;
         ResultSet rs = null;
         Persona p = null;
-        String Query = "SELECT `id_persona`, CONCAT(`nombres`,' ', `apepat`,' ', `apemat`) as nombre, "
-                + "case `genero`when 'M' then 'MASCULINO' when 'F' then 'FEMENINO' end as `genero`, `dni`, "
-                + "`fecha_nac`, `ruc`,`telefono_propio`, `direccion`, `codigo_uni`, `estado` FROM `persona`";
+        String Query = "SELECT `id_persona`, UPPER(CONCAT(`nombres`,' ', `apepat`,' ', `apemat`)) as nombre,"
+                     + " case `genero`when 'M' then 'MASCULINO' when 'F' then 'FEMENINO' "
+                     + "end as `genero`, `cargo`,`codigo`, `estado` FROM `persona` order by id_persona";
         try {
             list_pers = new ArrayList<>();
             st = cn.centroConexion().createStatement();
@@ -240,12 +231,8 @@ public class PersonaDaoImpl implements PersonaDao {
                 p.setId_persona(rs.getString("id_persona"));
                 p.setNombres(rs.getString("nombre"));
                 p.setGenero(rs.getString("genero"));
-                p.setDni(rs.getString("dni"));
-                p.setTelefono_propio(rs.getString("telefono_propio"));
-                p.setFecha_nac(rs.getString("fecha_nac"));
-                p.setDireccion(rs.getString("direccion"));
-                p.setRuc(rs.getString("ruc"));
-                p.setCodigo_uni(rs.getString("codigo_uni"));
+                p.setCargo(rs.getString("cargo"));
+                p.setCodigo(rs.getString("codigo"));
                 p.setEstado(rs.getString("estado"));
                 list_pers.add(p);
                 cn.cerrar();
@@ -260,8 +247,42 @@ public class PersonaDaoImpl implements PersonaDao {
 
     
     @Override
-    public byte[] obtenImagenProducto(int idProducto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public byte[] obtenImagenPersona(int idPer) {
+        Connection cn=null;
+        ResultSet rs = null;
+        PreparedStatement pr = null;
+        byte[] buffer = null;
+        try {
+            Class.forName(classFor);
+            cn=DriverManager.getConnection(url, usuario,clave);
+            String sql = "SELECT  `foto` FROM `persona` WHERE `id_persona` = ?";
+            pr = cn.prepareStatement(sql);
+            pr.setInt(1, idPer);
+            rs = pr.executeQuery();
+            while (rs.next()){
+                Blob bin = rs.getBlob("fotoProducto");
+                if (bin != null) {
+                    InputStream inStream = bin.getBinaryStream();
+                    int size = (int) bin.length();
+                    buffer = new byte[size];
+                    int length = -1;
+                    int k = 0;
+                    try {
+                        inStream.read(buffer, 0, size);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            return null;
+        } finally {
+            cn=null;
+            rs = null;
+            pr = null;
+        }
+        return buffer;
     }
 
+  
 }

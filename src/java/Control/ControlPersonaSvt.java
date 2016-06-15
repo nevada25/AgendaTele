@@ -44,10 +44,10 @@ public class ControlPersonaSvt extends HttpServlet {
         Apemat = Apemat == null ? " " : Apemat;
         String genero = request.getParameter("genero");
         genero = genero == null ? " " : genero;
-        String fecha_naci = request.getParameter("fecha_naci");
-        fecha_naci = fecha_naci == null ? " " : fecha_naci;
-        String DNI = request.getParameter("DNI");
-        DNI = DNI == null ? " " : DNI;
+        String cargo = request.getParameter("Cargo");
+        cargo = cargo == null ? " " : cargo;
+        String codigo = request.getParameter("Codigo");
+        codigo = codigo == null ? " " : codigo;
         String Telefono = request.getParameter("Telefono");
         Telefono = Telefono == null ? " " : Telefono;
         String Ruc = request.getParameter("Ruc");
@@ -77,6 +77,11 @@ public class ControlPersonaSvt extends HttpServlet {
                 break;
             case "Eliminando":
                 break;
+            case "VerPersona":
+                request.setAttribute("Persona", pcdao.obteneridpe(Id_persona));
+                request.getRequestDispatcher("Persona.jsp?opcion=VERPersona").forward(request, response);
+                break;
+                    
             case "VerImagen":
                 HttpSession sesion = request.getSession();
                 response.setContentType("image/jpeg");
@@ -84,7 +89,7 @@ public class ControlPersonaSvt extends HttpServlet {
 
                 String idProducto = String.valueOf(sesion.getAttribute("codigoProducto"));
                 int idProd = Integer.parseInt(idProducto);
-                byte[] imag = pr.obtenImagenProducto(idProd);
+                byte[] imag = pr.obtenImagenPersona(idProd);
                 if (imag != null) {
                     ServletOutputStream out2 = response.getOutputStream();
                     out2.write(imag);
@@ -94,13 +99,10 @@ public class ControlPersonaSvt extends HttpServlet {
                 p.setNombres(Nombre);
                 p.setApepat(Apepat);
                 p.setApemat(Apemat);
-                p.setDireccion(Direccion);
-                p.setDni(DNI);
-                p.setFecha_nac(fecha_naci);
                 p.setGenero(genero);
-                p.setRuc(Ruc);
-                p.setTelefono_propio(Telefono);
-                p.setCodigo_uni(Codigo_uni);
+                p.setCargo(cargo);
+                p.setCodigo(Codigo_uni);
+
                 if (pcdao.AgregarPersonas(p)) {
                     alert = "success";
                     mensaje = "SE AGREGO CORRECTAMENTE";
@@ -121,13 +123,10 @@ public class ControlPersonaSvt extends HttpServlet {
                 p.setNombres(Nombre);
                 p.setApepat(Apepat);
                 p.setApemat(Apemat);
-                p.setDireccion(Direccion);
-                p.setDni(DNI);
-                p.setFecha_nac(fecha_naci);
                 p.setGenero(genero);
-                p.setRuc(Ruc);
-                p.setTelefono_propio(Telefono);
-                p.setCodigo_uni(Codigo_uni);
+                p.setCargo(cargo);
+                p.setCodigo(Codigo_uni);
+
                 if (pcdao.ActualizarPersonas(p)) {
                     alert = "success";
                     mensaje = "SE ACTUALIZO CORRECTAMENTE";
@@ -152,7 +151,7 @@ public class ControlPersonaSvt extends HttpServlet {
                     request.getRequestDispatcher("Persona.jsp?opcion=Modificar").forward(request, response);
                 } else {
                     alert = "error";
-                    mensaje = "ERROR AL ELIMINAR";
+                    mensaje = "ERROR AL ELIMINAR O DATO SE ESTA UTILIZANDO";
                     request.setAttribute("alert", alert);
                     request.setAttribute("mensaje", mensaje);
                     request.getRequestDispatcher("Persona.jsp?opcion=Modificar").forward(request, response);

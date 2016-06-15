@@ -84,20 +84,21 @@ public class ControlAreaSvt extends HttpServlet {
 
                 break;
             case "Eliminar":
-                    if (dao.EliminarArea(Integer.parseInt(id_area))) {
+                if (dao.EliminarArea(Integer.parseInt(id_area))) {
                     alert = "success";
                     mensaje = "SE ELIMINO CORRECTAMENTE";
                     request.setAttribute("mensaje", mensaje);
                     request.setAttribute("alert", alert);
                     request.getRequestDispatcher("FormArea.jsp?opcion=Modificar").forward(request, response);
                 } else {
-                    request.getRequestDispatcher("FormArea.jsp?opcion=Modificar").forward(request, response);
                     alert = "error";
-                    mensaje = "SE ERROR AL ELIMINAR";
+                    mensaje = "ERROR AL ELIMINAR O EL DATO SE ESTA UTILIZANDO";
                     request.setAttribute("mensaje", mensaje);
                     request.setAttribute("alert", alert);
+                    request.getRequestDispatcher("FormArea.jsp?opcion=Modificar").forward(request, response);
+
                 }
-              
+
                 break;
         }
     }

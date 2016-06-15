@@ -17,8 +17,8 @@ public class CorreoDaoImpl implements CorreoDao{
     public boolean InsertCorreo(Correo co) {
          boolean estado=false;
         Statement st;
-        String sql = "INSERT INTO `correo`(`id_correo`, `id_tipo_correo`, `correo`, `estado`, `id_persona`)"
-                   + " VALUES (null,"+co.getId_tipo_correo()+",'"+co.getCorreo()+"','1',"+co.getId_persona()+")";
+        String sql = "INSERT INTO `correo`(`id_correo`, `id_tipo_correo`, `correo`, `estado`)"
+                   + " VALUES (null,"+co.getId_tipo_correo()+",'"+co.getCorreo()+"','1')";
         try {
             st=cn.centroConexion().createStatement();
             st.executeUpdate(sql);
@@ -95,10 +95,7 @@ public class CorreoDaoImpl implements CorreoDao{
     public Correo BuscarId_correo(String id_correo) {
         Statement st = null;
         ResultSet rs= null;
-        String Query = "SELECT c.`id_correo` as id_correo,c.`id_tipo_correo` as id_tipo_correo,c.`correo` as correo,"
-                     + "c.`estado` as estado,c.`id_persona` as id_persona,CONCAT(p.`nombres`,' ',p.`apepat`,' ',p.`apemat`) as nombre "
-                     + "FROM `correo` c, `tipo_correo` tc,`persona` p WHERE tc.`id_tipo_correo`=c.`id_tipo_correo` and"
-                     + " p.`id_persona`=c.`id_persona` and c.`id_correo`="+id_correo;
+        String Query = "SELECT `id_correo`, `id_tipo_correo`, `correo`, `estado` FROM `correo` where `id_correo`="+id_correo;
         Correo co= null;
         
         try {
@@ -110,7 +107,6 @@ public class CorreoDaoImpl implements CorreoDao{
                 co.setId_tipo_correo(rs.getString("id_tipo_correo"));
                 co.setCorreo(rs.getString("correo"));
                 co.setEstado(rs.getString("estado"));
-                co.setId_persona(rs.getString("nombre"));
             }
             System.out.println(Query);
             cn.cerrar();
@@ -128,10 +124,9 @@ public class CorreoDaoImpl implements CorreoDao{
         Statement st = null;
         ResultSet rs = null;
         Correo co = null;
-        String Query = "SELECT c.`id_correo` as id_correo,c.`id_tipo_correo` as id_tipo_correo,CONCAT(c.`correo`,tc.`descripcion`) as correo,"
-                     + "c.`estado` as estado,c.`id_persona` as id_persona,CONCAT(p.`nombres`,' ',p.`apepat`,' ',p.`apemat`) as nombre "
-                     + "FROM `correo` c, `tipo_correo` tc,`persona` p WHERE tc.`id_tipo_correo`=c.`id_tipo_correo` and"
-                     + " p.`id_persona`=c.`id_persona`";
+        String Query = "SELECT co.`id_correo` as id_correo,CONCAT(co.`correo`,tc.`descripcion`) as correo " 
+                      +"FROM `correo` co,`tipo_correo` tc " 
+                      +"WHERE  tc.`id_tipo_correo`=co.`id_tipo_correo`";
         try {
             lista = new ArrayList<Correo>();
             st = cn.centroConexion().createStatement();
@@ -140,8 +135,6 @@ public class CorreoDaoImpl implements CorreoDao{
                 co = new Correo();
                 co.setId_correo(rs.getString("id_correo"));
                 co.setCorreo(rs.getString("correo"));
-                co.setId_persona(rs.getString("nombre"));
-                co.setEstado(rs.getString("estado"));
                 lista.add(co);
                 
             }

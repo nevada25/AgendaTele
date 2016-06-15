@@ -12,7 +12,9 @@
 <jsp:useBean id="mensaje" scope="request" class="java.lang.String" />
 <jsp:useBean id="TipoCorreo" scope="request" class="bean.Tipo_Correo" />
 <jsp:useBean id="Correo" scope="request" class="bean.Correo" />
-
+<style>tr>th,tr>td{
+    text-align: center;
+}</style>
 
 <%
     //LLAMAR A LAS DATOS ENVIADO
@@ -39,15 +41,13 @@
     <center><h1><b>CORREO</b></h1></center>
 </div>
 <div class="panel-body">
-    <div class="col-lg-1"></div>
-    <div class="col-lg-10">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th class="col-lg-1 text-center">#</th>
-                    <th class="col-lg-5 text-center">Nombre</th>
-                    <th class="col-lg-4 text-center">Correo</th>
-
+                    <th class="text-center">#</th>
+                    <th class="col-lg-12 text-center">Correo</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,9 +57,8 @@
                 %>
                 <tr>
 
-                    <td class="col-lg-1 text-center"><%=count%></td>
-                    <td class="col-lg-5"><%=lista.getId_persona()%></td>
-                    <td class="col-lg-4"><%=lista.getCorreo()%></td>
+                    <td class="text-center"><%=count%></td>
+                    <td class="col-lg-12"><%=lista.getCorreo()%></td>
                 </tr>
                 <%
 
@@ -67,7 +66,7 @@
             </tbody>
         </table>
     </div>
-    <div class="col-lg-1"></div>
+    <div class="col-lg-2"></div>
 </div>     
 <%@include file="pie.jsp" %>
 <%
@@ -79,7 +78,7 @@
 <script>
     alertify.<%=alert%>("<%=mensaje%>");
 </script>
-<div class="panel-heading">
+<div class="panel-info">
     <center><h1><b>Correo</b></h1></center>
 </div>
 <div class="panel-body">
@@ -116,9 +115,8 @@
             </div>
             <thead>
                 <tr>
-                    <th class="col-lg-1 text-center">#</th>
-                    <th class="col-lg-6 ">Nombre</th>
-                    <th class="col-lg-3 ">Correo</th>
+                    <th class="text-center">#</th>
+                    <th class="col-lg-10 ">Correo</th>
                     <th colspan="2" class="col-lg-2 text-center">OPCIONES <a class="btn btn-info  material-icons" href="javascript:void(0)" onclick="javascript:AgregarCorreo()" data-toggle="modal" data-target="#agregar" >add</a></th>
                 </tr>
             </thead>
@@ -130,11 +128,11 @@
                 %>
                 <tr>
 
-                    <td class="col-lg-1 text-center"><%=x%></td>
-                    <td class="col-lg-6 text-center"><%=lista.getId_persona()%></td>
-                    <td class="col-lg-3"><%=lista.getCorreo()%></td>
+                    <td class="text-center"><%=x%></td>
+                    <td class="col-lg-10"><%=lista.getCorreo()%></td>
                     <td class="col-lg-1 text-center"><a class="btn btn-warning glyphicon glyphicon-pencil" href="javascript:void(0)" onclick="javascript:EditarCorreo('<%=lista.getId_correo()%>')" data-toggle="modal" data-target="#Editar"></a></td>
-                    <td class="col-lg-1 text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="ControlCorreoSvt?opcion=Eliminar&id_correo=<%=lista.getId_correo()%>"></a></td>
+<%----                    <td class="col-lg-1 text-center"><a class="btn btn-danger glyphicon glyphicon-trash" href="javascript:void(0)" onclick="javascript:eliminar('<%=lista.getId_correo()%>')"></a></td>-----%>
+                    <td class="col-lg-1 text-center"><a class="btn btn-danger glyphicon glyphicon-trash" id="confirm" href="ControlCorreoSvt?opcion=Eliminar&id_correo=<%=lista.getId_correo()%>"></a></td>
                 </tr>
                 <%
                     }
@@ -155,6 +153,26 @@
         $("#Correo_AResul").load("ControlCorreoSvt?opcion=Inser", function () {
             $("#Correo_AResul").show("slow");
         });
+    }
+</script>
+<script type="text/javascript">
+    
+    function eliminar(id_correo)
+    {
+$("#confirm").on( 'click', function () {
+			reset();
+			alertify.confirm("¿SEGURO QUE DESEAS ELIMINAR", function (e) {
+				if (e) {
+					alertify.success("SE ELIMINO CORRECTAMENTE");
+				} else {
+					alertify.error("ERRORAL EMINAR");
+				}
+			});
+			return false;
+		});
+			
+        
+        
     }
 </script>
 <script type="text/javascript">
@@ -195,13 +213,7 @@
                     <style>table#tace{padding-left: -50px;}#bur{background: #198c19;}</style>
                     <table id="tace">
                        <thead>
-                           <tr><select name="Persona"  style="width: 400px;" class="form-control">
-                           <option>SELECCIONAR PERSONA</option>
-                           <%for(Persona per:pdao.ListarPersona()){%>
-                           <option value="<%=per.getId_persona()%>"><%=per.getNombres()%></option>
-                           <%}%>
-                       </select>
-                            </tr>
+                           
                         </thead>
                         <tbody>
                             <tr>
@@ -262,11 +274,7 @@
                 <div class="">
                     
                     <table id="tace">
-                        <thead>
-                            <tr>
-                        <input type="text" class="form-control  text-center" style="width: 400px;" id="Name" name="Name"  value="<%=cs.getId_persona()%>" disabled="">
-                            </tr>
-                        </thead>
+                        
                         <tbody>
                             <tr>
                                  <th></th>

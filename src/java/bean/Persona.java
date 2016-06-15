@@ -18,32 +18,36 @@ public class Persona {
     private String apepat;
     private String apemat;
     private String genero;
-    private String dni;
-    private String fecha_nac;
-    private String telefono_propio;
-    private String ruc;
-    private String direccion;
-    private String codigo_uni;
-    private InputStream foto_persona;
+    private String cargo;
+    private String codigo;
+    private InputStream foto;
     private String estado;
 
     public Persona() {
     }
 
-    public Persona(String id_persona, String nombres, String apepat, String apemat, String genero, String dni, String fecha_nac, String telefono_propio, String ruc, String direccion, String codigo_uni, InputStream foto_persona, String estado) {
+    public Persona(String id_persona, String nombres, String apepat, String apemat, String genero, String cargo, String codigo, InputStream foto, String estado) {
         this.id_persona = id_persona;
         this.nombres = nombres;
         this.apepat = apepat;
         this.apemat = apemat;
         this.genero = genero;
-        this.dni = dni;
-        this.fecha_nac = fecha_nac;
-        this.telefono_propio = telefono_propio;
-        this.ruc = ruc;
-        this.direccion = direccion;
-        this.codigo_uni = codigo_uni;
-        this.foto_persona = foto_persona;
+        this.cargo = cargo;
+        this.codigo = codigo;
+        this.foto = foto;
         this.estado = estado;
+    }
+
+    public Persona(int i, String luis_miguel, String linares, String lozano, String f, String otros, String string) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
     }
 
     public String getId_persona() {
@@ -86,60 +90,20 @@ public class Persona {
         this.genero = genero;
     }
 
-    public String getDni() {
-        return dni;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setDni(String dni) {
-        this.dni = dni;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
-    public String getFecha_nac() {
-        return fecha_nac;
+    public InputStream getFoto() {
+        return foto;
     }
 
-    public void setFecha_nac(String fecha_nac) {
-        this.fecha_nac = fecha_nac;
-    }
-
-    public String getTelefono_propio() {
-        return telefono_propio;
-    }
-
-    public void setTelefono_propio(String telefono_propio) {
-        this.telefono_propio = telefono_propio;
-    }
-
-    public String getRuc() {
-        return ruc;
-    }
-
-    public void setRuc(String ruc) {
-        this.ruc = ruc;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getCodigo_uni() {
-        return codigo_uni;
-    }
-
-    public void setCodigo_uni(String codigo_uni) {
-        this.codigo_uni = codigo_uni;
-    }
-
-    public InputStream getFoto_persona() {
-        return foto_persona;
-    }
-
-    public void setFoto_persona(InputStream foto_persona) {
-        this.foto_persona = foto_persona;
+    public void setFoto(InputStream foto) {
+        this.foto = foto;
     }
 
     public String getEstado() {
@@ -150,6 +114,8 @@ public class Persona {
         this.estado = estado;
     }
 
+  
+    
     
 
 }

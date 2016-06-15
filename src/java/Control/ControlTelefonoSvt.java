@@ -44,7 +44,6 @@ public class ControlTelefonoSvt extends HttpServlet {
             case "Eliminando":
                 break;
             case "Agregar":
-                t.setId_persona(Persona);
                 t.setId_operador(Operador);
                 t.setNro_telefono(Numero);
                 if (tdao.AgregarTelefono(t)) {
@@ -91,7 +90,8 @@ public class ControlTelefonoSvt extends HttpServlet {
                 request.getRequestDispatcher("Telefono.jsp?opcion=Modificar").forward(request, response);    
                 } else {
                     alert="error";
-                    mensaje="ERROR AL ELIMINAR";
+                    
+                    mensaje="ERROR AL ELIMINAR O EL DATO SE ESTA UTILIZANDO";
                     request.setAttribute("alert", alert);
                     request.setAttribute("mensaje", mensaje);
                 request.getRequestDispatcher("Telefono.jsp?opcion=Modificar").forward(request, response); 

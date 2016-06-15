@@ -19,7 +19,7 @@ public class Conexion {
         Connection cn = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda2016", "root", "root");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto", "root", "root");
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("ERROR: " + e.getMessage());
         }
@@ -49,6 +49,15 @@ public class Conexion {
         try {
             Conexion.Conexiones().commit();
         } catch (Exception e) {
+        }
+    }
+    
+    public static void main(String[] args) {
+        Conexion c=new Conexion();
+        if ( Conexiones() !=null) {
+            System.out.println("OK");
+        } else {
+            System.out.println("ERROR");
         }
     }
 }

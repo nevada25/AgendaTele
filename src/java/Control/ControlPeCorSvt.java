@@ -27,6 +27,8 @@ public class ControlPeCorSvt extends HttpServlet {
         Area = Area == null ? " " : Area;
         String Telefono = request.getParameter("Telefono");
         Telefono = Telefono == null ? " " : Telefono;
+        String Persona = request.getParameter("Persona");
+        Persona = Persona == null ? " " : Persona;
         String mensaje = "";
         String alert = "";
         //LLAMANDO A LAS ENTIDADES 
@@ -48,6 +50,7 @@ public class ControlPeCorSvt extends HttpServlet {
                 pc.setId_area(Area);
                 pc.setId_correo(Correo);
                 pc.setId_telefono(Telefono);
+                pc.setId_persona(Persona);
                 if (pcdao.InsertPersonaCorreo(pc)) {
                     alert = "success";
                     mensaje = "SE AGREGO CORRECTAMENTE";

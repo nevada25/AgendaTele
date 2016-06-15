@@ -8,8 +8,11 @@ package Control;
 import bean.Usuario;
 import dao1.UsuarioDao;
 import daoimpl1.UsuarioDaoImpl;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -36,6 +43,7 @@ public class ControlLoginSvt extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         String usuario = request.getParameter("usuario");
         usuario = usuario == null ? "" : usuario;
         String clave = request.getParameter("clave");
@@ -51,15 +59,11 @@ public class ControlLoginSvt extends HttpServlet {
         String mensaje = "";
         String alert = "";
         String id_usuario = request.getParameter("id_usuario");id_usuario = id_usuario == null ? "" : id_usuario;
-        
         mensaje = mensaje == null ? "" : mensaje;
-        
         String texto=request.getParameter("texto");
-        
         HttpSession session = request.getSession();
         Usuario u = new Usuario();
         UsuarioDao usdao = new UsuarioDaoImpl();
-
         
         if(acciones.equals("VerImagen")){
         
@@ -78,25 +82,63 @@ public class ControlLoginSvt extends HttpServlet {
         
         
         if (acciones.equals("AGREGAR")) {
-            u.setLogin(usuario);
-            u.setClave(clave);
-            u.setCorreo(correo);
-            if (usdao.AgregarUsuario(u)) {
-               mensaje="SE AGREGO CORRECTAMENTE";
-               alert = "success";
-               request.setAttribute("mensaje", mensaje);
-               request.setAttribute("alert", alert);
-               request.getRequestDispatcher("login.jsp").forward(request, response);
-            } else {
-                mensaje="Usuario o password incorrecto...";
-                alert = "error";
-                request.setAttribute("mensaje", mensaje);
-                request.setAttribute("alert", alert);
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-                 
+//            u.setLogin(usuario);
+//            u.setClave(clave);
+//            u.setCorreo(correo);
+//            if (usdao.AgregarUsuario(u)) {
+//               mensaje="SE AGREGO CORRECTAMENTE";
+//               alert = "success";
+//               request.setAttribute("mensaje", mensaje);
+//               request.setAttribute("alert", alert);
+//               request.getRequestDispatcher("login.jsp").forward(request, response);
+//            } else {
+//                mensaje="Usuario o password incorrecto...";
+//                alert = "error";
+//                request.setAttribute("mensaje", mensaje);
+//                request.setAttribute("alert", alert);
+//                request.getRequestDispatcher("login.jsp").forward(request, response);
+//                 
+//            }
+            
+//imagenes
+ FileItemFactory file_factory=new DiskFileItemFactory();
+        ServletFileUpload sfu= new ServletFileUpload(file_factory);
+        
+        ArrayList<String> campos=new ArrayList<>();
+        ArrayList<String> imgs=new ArrayList<>();
+        
+        try {
+            List items=sfu.parseRequest(request);
+             for (int i = 0; i < items.size(); i++) {
+                 FileItem  item= (FileItem) items.get(i);
+                 if (!item.isFormField()) {
+                     File archivo = new File("C:\\Users\\DOTADO\\Documents\\NetBeansProjects\\AgendaTelefonica\\web\\img\\user\\"+item.getName());
+                 item.write(archivo);
+                 imgs.add("img/user/"+item.getName());
+                 }else{
+                 campos.add(item.getString());
+                 }
             }
-            
-            
+        } catch (Exception e) {
+        
+        }
+        Usuario ue=new Usuario(0, campos.get(0), campos.get(1), campos.get(2), imgs.get(0), "1");
+        if (usdao.AgregarUsuario(ue)) {
+         alert = "success";
+                    mensaje = "SE AGREGO CORRECTAMENTE";
+                    request.setAttribute("mensaje", mensaje);
+                    request.setAttribute("alert", alert);
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                
+        }else{
+         alert = "error";
+                    mensaje = "SE ERROR AL AGREGAR";
+                    request.setAttribute("mensaje", mensaje);
+                    request.setAttribute("alert", alert);
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+    
+        }
+                    
         }
         
         
@@ -121,6 +163,7 @@ public class ControlLoginSvt extends HttpServlet {
                     session.setAttribute("id_usuario", u.getId_usuario());
                     session.setAttribute("usuario", u.getLogin());
                     session.setAttribute("correo", u.getCorreo());
+                    session.setAttribute("foto", u.getImg());
                     request.getRequestDispatcher("Principal.jsp").forward(request, response);
                 } else {
                     mensaje="Usuario o password incorrecto...";
@@ -137,6 +180,7 @@ public class ControlLoginSvt extends HttpServlet {
             session.removeAttribute("id_usuario");
             session.removeAttribute("usuario");
             session.removeAttribute("correo");
+            session.removeAttribute("foto");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
         if (request.getParameter("salir") == null) {
